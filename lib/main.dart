@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'src/article.dart';
 
 void main() => runApp(MyApp());
@@ -26,7 +28,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   List<Article> _articles = articles;
 
   @override
@@ -35,10 +36,28 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _articles.map((article) => Text(article.text)).toList(),
+      body: ListView(
+        children: _articles.map(_buildItem).toList(),
+      ),
+    );
+  }
+
+  Widget _buildItem(Article article) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ListTile(
+          title: Text(
+            article.text,
+            style: TextStyle(fontSize: 25),
+          ),
+          subtitle: Text('${article.commentsCount} comments'),
+          onTap: () async {
+            final fakeUrl = 'http://${article.domain}';
+            if(await canLaunch(fakeUrl)) {
+              launch(fakeUrl);
+            }
+          },
         ),
       ),
     );
