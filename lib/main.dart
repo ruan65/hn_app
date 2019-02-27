@@ -36,30 +36,47 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: _articles.map(_buildItem).toList(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(Duration(seconds: 2));
+
+          setState(() {
+            _articles.removeAt(0);
+          });
+        },
+        child: ListView(
+          children: _articles.map(_buildItem).toList(),
+        ),
       ),
     );
   }
 
   Widget _buildItem(Article article) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListTile(
+    return Padding(
+      key: Key(article.text),
+      padding: const EdgeInsets.all(12.0),
+      child: ExpansionTile(
           title: Text(
             article.text,
             style: TextStyle(fontSize: 25),
           ),
-          subtitle: Text('${article.commentsCount} comments'),
-          onTap: () async {
-            final fakeUrl = 'http://${article.domain}';
-            if(await canLaunch(fakeUrl)) {
-              launch(fakeUrl);
-            }
-          },
-        ),
-      ),
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text('${article.commentsCount} comments'),
+                IconButton(
+                  icon: Icon(Icons.launch),
+                  onPressed: () async {
+                    final fakeUrl = 'http://${article.domain}';
+                    if (await canLaunch(fakeUrl)) {
+                      launch(fakeUrl);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ]),
     );
   }
 }
