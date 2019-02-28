@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 IconButton(
                   icon: Icon(Icons.launch),
                   onPressed: () async {
-                    final fakeUrl = 'http://${article.domain}';
+                    final fakeUrl = 'http://${article.url}';
                     if (await canLaunch(fakeUrl)) {
                       launch(fakeUrl);
                     }
