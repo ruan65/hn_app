@@ -28,7 +28,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Article> _articles = articles;
+  List<Article> _articles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text('${article.commentsCount} comments'),
+                Text('score: ${article.score}'),
                 IconButton(
                   icon: Icon(Icons.launch),
                   onPressed: () async {
