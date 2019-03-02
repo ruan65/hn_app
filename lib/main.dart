@@ -28,7 +28,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Article> _articles = [];
+  List<int> _ids = [
+    19288241,
+    19278848,
+    19287021,
+    19286970,
+    19285105,
+    19287964,
+    19287151,
+    19288693,
+    19287809,
+    19286216
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await Future.delayed(Duration(seconds: 2));
-
-          setState(() {
-            _articles.removeAt(0);
-          });
-        },
-        child: ListView(
-          children: _articles.map(_buildItem).toList(),
-        ),
+      body: ListView(
+        children: _ids.map((id) => Text('id: $id')).toList(),
       ),
     );
   }

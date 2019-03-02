@@ -53,3 +53,7 @@ Article parseArticle(String jsonStr) {
   Article article = standardSerializers.deserializeWith(Article.serializer, parsed);
   return article;
 }
+
+List parseTopStories(String jsonStr) {
+  return jsonDecode(jsonStr) as List;
+}
