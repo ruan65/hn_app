@@ -23,5 +23,5 @@ void main() {
 
     expect(find.byIcon(Icons.launch), findsOneWidget);
 
-  });
+  }, skip: true);
 }

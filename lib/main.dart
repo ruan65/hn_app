@@ -29,27 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<int> _ids = [
-    19288241,
-    19278848,
-    19287021,
-    19286970,
-    19285105,
-    19287964,
-    19287151,
-    19288693,
-    19287809,
-    19286216
-  ];
-
-  Future<Article> _getArticle(int id) async {
-    final storyUrl = 'https://hacker-news.firebaseio.com/v0/item/$id.json';
-
-    final storyResp = await http.get(storyUrl);
-
-    if (storyResp.statusCode != 200) return null;
-    return parseArticle(storyResp.body);
-  }
 
   List<Widget> _getArticleList(List<int> ids) => ids
       .map(
