@@ -1,33 +1,68 @@
-import 'package:rxdart/rxdart.dart';
+import 'dart:collection';
 
-import 'package:http/http.dart' as http;
 import 'package:hn_app/src/article.dart';
+import 'package:http/http.dart' as http;
+import 'package:rxdart/rxdart.dart';
 
 class HackerNewsBloc {
   Stream<List<Article>> get articles => _articlesSubject.stream;
 
-  final _articlesSubject = BehaviorSubject<List<Article>>();
+  final _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
 
   var _articles = <Article>[];
 
-  HackerNewsBloc() {}
+  HackerNewsBloc() {
+    _updateArticles()
+        .then((_) => _articlesSubject.add(UnmodifiableListView(_articles)));
+  }
 
   List<int> _ids = [
-    19288241,
+    19289836,
+    19289782,
+    19278839,
+    19289865,
+    19279788,
+    19280927,
+    19290044,
+    19289583,
     19278848,
-    19287021,
-    19286970,
-    19285105,
-    19287964,
-    19287151,
-    19288693,
+    19281222,
+    19280864,
+    19279251,
+    19290069,
+    19290059,
+    19289353,
+    19289848,
+    19289509,
+    19283865,
+    19289771,
+    19281213,
+    19288905,
+    19289755,
+    19287962,
+    19278915,
+    19287772,
+    19279300,
     19287809,
-    19286216
+    19287964,
+    19286970,
+    19279715,
+    19287021,
+    19273955,
+    19285105,
+    19282346,
+    19289381,
+    19290011,
+    19288077,
+    19281420,
+    19281834,
+    19286216,
+    19280341,
+    19283743
   ];
 
-  Future<List<Article>> _getArticles() async {
-    final futureArticles = _ids.map((id) => _getArticle(id));
-    return await Future.wait(futureArticles);
+  Future<Null> _updateArticles() async {
+    _articles = await Future.wait(_ids.map((id) => _getArticle(id)));
   }
 
   Future<Article> _getArticle(int id) async {
