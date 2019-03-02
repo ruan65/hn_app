@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'src/article.dart';
@@ -41,6 +42,33 @@ class _MyHomePageState extends State<MyHomePage> {
     19286216
   ];
 
+  Future<Article> _getArticle(int id) async {
+    final storyUrl = 'https://hacker-news.firebaseio.com/v0/item/$id.json';
+
+    final storyResp = await http.get(storyUrl);
+
+    if (storyResp.statusCode != 200) return null;
+    return parseArticle(storyResp.body);
+  }
+
+  List<Widget> _getArticleList(List<int> ids) => ids
+      .map(
+        (id) => FutureBuilder<Article>(
+              future: _getArticle(id),
+              builder: (BuildContext context, AsyncSnapshot<Article> sn) {
+                if (sn.connectionState == ConnectionState.done && sn.hasData) {
+                  return _buildItem(sn.data);
+                } else {
+                  return Center(child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: CircularProgressIndicator(),
+                  ));
+                }
+              },
+            ),
+      )
+      .toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,31 +76,31 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: ListView(
-        children: _ids.map((id) => Text('id: $id')).toList(),
+        children: _getArticleList(_ids),
       ),
     );
   }
 
   Widget _buildItem(Article article) {
     return Padding(
-      key: Key(article.text),
+      key: Key(article.title),
       padding: const EdgeInsets.all(12.0),
       child: ExpansionTile(
           title: Text(
-            article.text,
+            article.title,
             style: TextStyle(fontSize: 25),
           ),
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text('score: ${article.score}'),
+                Text('type: ${article.type}'),
                 IconButton(
                   icon: Icon(Icons.launch),
                   onPressed: () async {
-                    final fakeUrl = 'http://${article.url}';
-                    if (await canLaunch(fakeUrl)) {
-                      launch(fakeUrl);
+                    final url = article.url;
+                    if (await canLaunch(url)) {
+                      launch(url);
                     }
                   },
                 ),
