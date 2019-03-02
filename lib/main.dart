@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
         initialData: UnmodifiableListView<Article>([]),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
+        currentIndex: 0,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.art_track), title: Text('New')),
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.bookmark), title: Text('Best')),
         ],
         onTap: (i) {
-          print('index: $i');
+          widget.bloc.storiesTypeSink.add(i == 0 ? StoriesType.NEW : StoriesType.POPULAR);
         },
       ),
     );
