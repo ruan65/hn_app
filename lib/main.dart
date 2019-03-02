@@ -1,7 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:hn_app/src/bloc/hn_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:collection';
 
 import 'src/article.dart';
 
@@ -39,7 +40,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,15 +48,24 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: StreamBuilder<UnmodifiableListView<Article>>(
         builder: (context, snapshot) => ListView(
-          children: snapshot.data.map((article) => _buildItem(article)).toList(),
-        ),
+              children:
+                  snapshot.data.map((article) => _buildItem(article)).toList(),
+            ),
         stream: widget.bloc.articles,
         initialData: UnmodifiableListView<Article>([]),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: Icon(Icons.cake), title: Text('Cake')),
-        BottomNavigationBarItem(icon: Icon(Icons.event), title: Text('Event')),
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 1,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.art_track), title: Text('New')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.bookmark), title: Text('Best')),
+        ],
+        onTap: (i) {
+          print('index: $i');
+        },
+      ),
     );
   }
 
