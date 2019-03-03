@@ -8,8 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:hn_app/main.dart';
-
 void main() {
   testWidgets('Clicking on tile opens it', (WidgetTester tester) async {
     // Build our app and trigger a frame.

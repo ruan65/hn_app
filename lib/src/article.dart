@@ -3,7 +3,6 @@ import 'package:built_collection/built_collection.dart';
 import 'serializers.dart';
 import 'package:built_value/serializer.dart';
 import 'dart:convert';
-import 'package:meta/meta.dart';
 
 part 'article.g.dart';
 
@@ -57,6 +56,7 @@ Article parseArticle(String jsonStr) {
   return article;
 }
 
-List parseTopStories(String jsonStr) {
-  return jsonDecode(jsonStr) as List;
+List<int> parseStoriesIds(String jsonStr) {
+  final list = jsonDecode(jsonStr) as List;
+  return list.map((i) => i as int).toList();
 }
